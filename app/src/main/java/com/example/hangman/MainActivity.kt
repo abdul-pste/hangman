@@ -28,6 +28,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import kotlin.random.Random
 
+import androidx.compose.ui.graphics.graphicsLayer
+
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -317,14 +320,24 @@ fun CorrectLettersDisplay(currentWord: String, correctLetters: MutableSet<Char>)
 fun LetterSelection(guessedLetters: MutableSet<Char>, onLetterGuess: (Char) -> Unit) {
     val alphabet = ('A'..'Z').toList()
 
+    // need to change button orientation when switching to portrait to landscape
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp
+    val (isWideScreen, chunkedValue) = if (screenWidth >= 600) true to 3
+    else false to 5
+
+
     Column {
-        alphabet.chunked(7).forEach { row ->
+        alphabet.chunked(chunkedValue).forEach { row ->
             Row {
                 row.forEach { letter ->
                     Button(
                         onClick = { onLetterGuess(letter) },
                         enabled = !guessedLetters.contains(letter),
                         modifier = Modifier.padding(4.dp)
+
+
+
                     ) {
                         Text(text = letter.toString())
                     }
@@ -346,33 +359,33 @@ fun DrawScope.drawHangman(incorrectGuesses: Int) {
     val baseY = size.height
 
 
-    drawLine(Color.Black, start = Offset(baseX, baseY), end = Offset(baseX, baseY - 150), strokeWidth = 8f) // Vertical pole
-    drawLine(Color.Black, start = Offset(baseX, baseY - 150), end = Offset(baseX + 50, baseY - 150), strokeWidth = 8f) // Top horizontal pole
-    drawLine(Color.Black, start = Offset(baseX + 50, baseY - 150), end = Offset(baseX + 50, baseY - 130), strokeWidth = 8f) // Short rope
+    drawLine(Color.White, start = Offset(baseX, baseY), end = Offset(baseX, baseY - 150), strokeWidth = 8f) // Vertical pole
+    drawLine(Color.White, start = Offset(baseX, baseY - 150), end = Offset(baseX + 50, baseY - 150), strokeWidth = 8f) // Top horizontal pole
+    drawLine(Color.White, start = Offset(baseX + 50, baseY - 150), end = Offset(baseX + 50, baseY - 130), strokeWidth = 8f) // Short rope
 
     if (incorrectGuesses > 0) {
 
-        drawCircle(Color.Black, radius = 20f, center = Offset(baseX + 50, baseY - 100))
+        drawCircle(Color.White, radius = 20f, center = Offset(baseX + 50, baseY - 100))
     }
     if (incorrectGuesses > 1) {
 
-        drawLine(Color.Black, start = Offset(baseX + 50, baseY - 80), end = Offset(baseX + 50, baseY - 40), strokeWidth = 8f)
+        drawLine(Color.White, start = Offset(baseX + 50, baseY - 80), end = Offset(baseX + 50, baseY - 40), strokeWidth = 8f)
     }
     if (incorrectGuesses > 2) {
 
-        drawLine(Color.Black, start = Offset(baseX + 50, baseY - 70), end = Offset(baseX + 30, baseY - 60), strokeWidth = 8f)
+        drawLine(Color.White, start = Offset(baseX + 50, baseY - 70), end = Offset(baseX + 30, baseY - 60), strokeWidth = 8f)
     }
     if (incorrectGuesses > 3) {
 
-        drawLine(Color.Black, start = Offset(baseX + 50, baseY - 70), end = Offset(baseX + 70, baseY - 60), strokeWidth = 8f)
+        drawLine(Color.White, start = Offset(baseX + 50, baseY - 70), end = Offset(baseX + 70, baseY - 60), strokeWidth = 8f)
     }
     if (incorrectGuesses > 4) {
 
-        drawLine(Color.Black, start = Offset(baseX + 50, baseY - 40), end = Offset(baseX + 30, baseY - 20), strokeWidth = 8f)
+        drawLine(Color.White, start = Offset(baseX + 50, baseY - 40), end = Offset(baseX + 30, baseY - 20), strokeWidth = 8f)
     }
     if (incorrectGuesses > 5) {
 
-        drawLine(Color.Black, start = Offset(baseX + 50, baseY - 40), end = Offset(baseX + 70, baseY - 20), strokeWidth = 8f)
+        drawLine(Color.White, start = Offset(baseX + 50, baseY - 40), end = Offset(baseX + 70, baseY - 20), strokeWidth = 8f)
     }
 }
 
